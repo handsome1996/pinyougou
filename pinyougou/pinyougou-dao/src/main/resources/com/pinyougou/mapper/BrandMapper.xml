@@ -5,4 +5,9 @@
     <select id="queryAll" resultType="TbBrand">
         SELECT * FROM tb_brand
     </select>
+
+    <select id="selectOptionList" resultType="map">
+        SELECT id, name as text from tb_brand
+    </select>
+
 </mapper>
