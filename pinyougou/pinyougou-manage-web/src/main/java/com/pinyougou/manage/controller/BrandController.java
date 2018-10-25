@@ -115,7 +115,7 @@ public class BrandController {
     }
 
     /**
-     * 查询品牌列表，返回的数据格式符合 select2 格式
+     * 用于模板管理的关联品牌下拉条功能,返回的数据格式符合 select2 格式
      * @return
      */
     @GetMapping("/selectOptionList")

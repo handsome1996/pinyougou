@@ -9,6 +9,7 @@ import java.util.Map;
 
 public interface SpecificationMapper extends Mapper<TbSpecification> {
 
+    //用于模板管理的关联规格下拉条功能
     List<Map<String, String>> selectOptionList();
 
 }

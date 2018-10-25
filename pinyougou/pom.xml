@@ -233,7 +233,7 @@
                 <version>${activemq.version}</version>
             </dependency>
 
-            <!-- 身份验证 -->
+            <!-- 身份安全验证 -->
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-web</artifactId>

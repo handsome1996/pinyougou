@@ -36,7 +36,7 @@
 
     </http>
 
-    <!--配置认证管理器-->
+    <!--配置认证管理器,账号密码写死-->
     <authentication-manager>
         <authentication-provider>
             <user-service>

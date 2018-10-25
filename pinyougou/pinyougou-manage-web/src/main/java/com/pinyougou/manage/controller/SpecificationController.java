@@ -102,7 +102,7 @@ public class SpecificationController {
     }
 
     /**
-     * 查询规格列表；结构如：[{"id":27,"text":"网络"},{"id":32,"text":"机身内存"}]
+     * 用于模板管理的关联规格下拉条功能；结构如：[{"id":27,"text":"网络"},{"id":32,"text":"机身内存"}]
      * @return 规格列表
      */
     @GetMapping("/selectOptionList")

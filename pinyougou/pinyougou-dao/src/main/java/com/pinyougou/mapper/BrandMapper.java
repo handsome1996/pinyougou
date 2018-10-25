@@ -10,5 +10,7 @@ public interface BrandMapper extends Mapper<TbBrand> {
 
     List<TbBrand> queryAll();
 
+
+    //用于模板管理的关联品牌下拉条功能
     List<Map<String, String>> selectOptionList();
 }

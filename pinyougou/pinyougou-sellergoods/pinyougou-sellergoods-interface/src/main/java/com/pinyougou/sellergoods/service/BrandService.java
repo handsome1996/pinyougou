@@ -26,5 +26,6 @@ public interface BrandService extends BaseService<TbBrand> {
     //条件分页
     PageResult search(TbBrand brand,Integer page, Integer rows);
 
+    //用于模板管理的关联品牌下拉条功能
     List<Map<String, String>> selectOptionList();
 }

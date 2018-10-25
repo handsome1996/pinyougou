@@ -59,6 +59,7 @@ public class BrandServiceImpl extends BaseServiceImpl<TbBrand> implements BrandS
         return new PageResult(pageInfo.getTotal(), pageInfo.getList());
     }
 
+    //用于模板管理的关联品牌下拉条功能
     @Override
     public List<Map<String, String>> selectOptionList() {
         return brandMapper.selectOptionList();

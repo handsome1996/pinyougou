@@ -14,6 +14,8 @@ import java.util.List;
 
 public class UserDetailServiceImpl implements UserDetailsService {
 
+    //这里不注解是因为service-security配置文件45行配置过,
+    //或者配置文件不写,就在这里注解@reference
     private SellerService sellerService;
 
     /**

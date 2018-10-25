@@ -40,6 +40,7 @@ public interface SpecificationService extends BaseService<TbSpecification> {
      */
     void deleteSpecificationByIds(Long[] ids);
 
+    //用于模板管理的关联规格下拉条功能
     List<Map<String, String>> selectOptionList();
 
 }

@@ -28,6 +28,13 @@ public class SpecificationServiceImpl extends BaseServiceImpl<TbSpecification> i
     @Autowired
     private SpecificationOptionMapper specificationOptionMapper;
 
+    /**
+     * 1.分页条件查询
+     * @param page
+     * @param rows
+     * @param specification
+     * @return
+     */
     @Override
     public PageResult search(Integer page, Integer rows, TbSpecification specification) {
         PageHelper.startPage(page, rows);
@@ -44,10 +51,18 @@ public class SpecificationServiceImpl extends BaseServiceImpl<TbSpecification> i
         return new PageResult(pageInfo.getTotal(), pageInfo.getList());
     }
 
+
+    /**
+     * 2.保存规格及其选项列表到数据库中
+     * @param specification 规格信息（规格及选项列表）；如：
+     * {"specificationOptionList":[{"optionName":"蓝色","orders":"1"}],"specification":{"specName":"颜色"}}
+     */
     @Override
     public void add(Specification specification) {
         //保存规格,在通用mapper中插入完之后可以回填新增对象的主键值
         specificationMapper.insertSelective(specification.getSpecification());
+
+        //2、保存规格选项列表中的每一个选项
         if(specification.getSpecificationOptionList() != null && specification.getSpecificationOptionList().size() > 0) {
             for (TbSpecificationOption specificationOption : specification.getSpecificationOptionList()) {
                 //设置规格id
@@ -60,49 +75,48 @@ public class SpecificationServiceImpl extends BaseServiceImpl<TbSpecification> i
 
 
     /**
-     * 根据规格id到数据库中查询规格及其选项
+     * 3.根据规格id到数据库中查询规格及其选项
      * @param id 规格id
      * @return 规格及其选项
      */
     @Override
     public Specification findOne(Long id) {
         Specification specification = new Specification();
-        //1、根据规格id查询规格
+        //3.1、根据规格id查询规格
         TbSpecification tbSpecification = specificationMapper.selectByPrimaryKey(id);
         specification.setSpecification(tbSpecification);
 
-        //2、根据规格id查询该规格对应的所有选项
+        //3.2、根据规格id查询该规格对应的所有选项
         /**
          *数据库执行语句如：
          *  select * from tb_specification_option where spec_id = ?
          */
         TbSpecificationOption param = new TbSpecificationOption();
         param.setSpecId(id);
-
         List<TbSpecificationOption> specificationOptionList = specificationOptionMapper.select(param);
 
-        //设置规格选项集合
+        //3.3设置规格选项集合
         specification.setSpecificationOptionList(specificationOptionList);
         return specification;
     }
 
 
     /**
-     * 规格、选项集合更新到数据库中
+     * 4.规格、选项集合更新到数据库中
      * @param specification 规格及其选项
      * @return 操作结果
      */
     @Override
     public void update(Specification specification) {
-        //1、更新规格
+        //4.1、更新规格
         specificationMapper.updateByPrimaryKey(specification.getSpecification());
 
-        //2、删除该规格对应的所有选项，根据规格id查询所有对应的选项delete from tb_specification_option where spec_id=?
+        //4.2、删除该规格对应的所有选项，根据规格id查询所有对应的选项delete from tb_specification_option where spec_id=?
         TbSpecificationOption param = new TbSpecificationOption();
         param.setSpecId(specification.getSpecification().getId());
         specificationOptionMapper.delete(param);
 
-        //3、新增该规格最新的规格选项集合
+        //4.3、新增该规格最新的规格选项集合
         if (specification.getSpecificationOptionList() != null && specification.getSpecificationOptionList().size() > 0) {
             for (TbSpecificationOption specificationOption : specification.getSpecificationOptionList()) {
                 //设置规格id
@@ -113,12 +127,18 @@ public class SpecificationServiceImpl extends BaseServiceImpl<TbSpecification> i
         }
     }
 
+
+    /**
+     * 5.删除规格及其对应的所有选项
+     * @param ids 规格id集合
+     * @return 操作结果
+     */
     @Override
     public void deleteSpecificationByIds(Long[] ids) {
-        //1、根据规格id删除规格
+        //5.1、根据规格id删除规格
         deleteByIds(ids);
 
-        //2、根据规格id集合删除规格选项
+        //5.2、根据规格id集合删除规格选项
         //delete from tb_specification_option where spec_id in (?,?);
 
         Example example = new Example(TbSpecificationOption.class);
@@ -127,6 +147,7 @@ public class SpecificationServiceImpl extends BaseServiceImpl<TbSpecification> i
         specificationOptionMapper.deleteByExample(example);
     }
 
+    //6.用于模板管理的关联规格下拉条功能
     @Override
     public List<Map<String, String>> selectOptionList() {
         return specificationMapper.selectOptionList();

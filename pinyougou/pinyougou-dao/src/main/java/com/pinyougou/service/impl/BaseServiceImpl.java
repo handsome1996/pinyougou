@@ -24,7 +24,7 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 
     @Override
     public T findOne(Serializable id) {
-        return mapper.selectByPrimaryKey(id);
+        return mapper.selectByPrimaryKey(id);//这些都来源于通用mapper的方法
     }
 
     @Override

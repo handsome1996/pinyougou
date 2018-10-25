@@ -8,7 +8,6 @@
         <outputRelativeToContentRoot value="true" />
         <module name="angularjs" />
         <module name="fastdfs_client" />
-        <module name="itcast-fastdfs" />
         <module name="pinyougou-common" />
         <module name="pinyougou-dao" />
         <module name="pinyougou-manage-web" />

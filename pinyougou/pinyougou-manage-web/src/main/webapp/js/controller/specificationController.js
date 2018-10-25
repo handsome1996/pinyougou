@@ -24,6 +24,7 @@ app.controller("specificationController", function ($scope, $controller, specifi
         } else {//新增
             object = specificationService.add($scope.entity);
         }
+
         object.success(function (response) {
             if(response.success){
                 $scope.reloadList();

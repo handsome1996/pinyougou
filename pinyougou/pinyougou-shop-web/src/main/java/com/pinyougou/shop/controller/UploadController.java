@@ -4,6 +4,7 @@ import com.pinyougou.common.util.FastDFSClient;
 import com.pinyougou.vo.Result;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,6 +17,7 @@ public class UploadController {
      * @param file 图片文件
      * @return 操作结果
      */
+    @RequestMapping(method = RequestMethod.POST)
     public Result upload(MultipartFile file){
         Result result = Result.fail("上传图片失败");
         try {
