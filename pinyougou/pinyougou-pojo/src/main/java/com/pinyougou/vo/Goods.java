@@ -8,8 +8,11 @@ import java.io.Serializable;
 import java.util.List;
 
 public class Goods implements Serializable {
+    //基本信息
     private TbGoods goods;
+    //描述信息
     private TbGoodsDesc goodsDesc;
+    //sku列表
     private List<TbItem> itemList;
 
     public TbGoods getGoods() {

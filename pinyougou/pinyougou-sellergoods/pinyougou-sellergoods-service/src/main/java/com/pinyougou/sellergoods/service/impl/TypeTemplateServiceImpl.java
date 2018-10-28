@@ -1,9 +1,13 @@
 package com.pinyougou.sellergoods.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.pinyougou.mapper.SpecificationOptionMapper;
 import com.pinyougou.mapper.TypeTemplateMapper;
+import com.pinyougou.pojo.TbSpecification;
+import com.pinyougou.pojo.TbSpecificationOption;
 import com.pinyougou.pojo.TbTypeTemplate;
 import com.pinyougou.sellergoods.service.TypeTemplateService;
 import com.pinyougou.service.impl.BaseServiceImpl;
@@ -13,12 +17,16 @@ import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
+import java.util.Map;
 
 @Service(interfaceClass = TypeTemplateService.class)
 public class TypeTemplateServiceImpl extends BaseServiceImpl<TbTypeTemplate> implements TypeTemplateService {
 
     @Autowired
     private TypeTemplateMapper typeTemplateMapper;
+
+    @Autowired
+    private SpecificationOptionMapper specificationOptionMapper;
 
     @Override
     public PageResult search(Integer page, Integer rows, TbTypeTemplate typeTemplate) {
@@ -34,5 +42,26 @@ public class TypeTemplateServiceImpl extends BaseServiceImpl<TbTypeTemplate> imp
         PageInfo<TbTypeTemplate> pageInfo = new PageInfo<>(list);
 
         return new PageResult(pageInfo.getTotal(), pageInfo.getList());
+    }
+
+    /**
+     * 根据分类模板的id查询其对应规格的选项
+     * @param id 分类模板的id
+     * @return
+     */
+    @Override
+    public List<Map> findSpecList(Long id) {
+        //查询规格选项
+        TbTypeTemplate typeTemplate = findOne(id);
+        //获取规格模板并转换为list
+        List<Map> specList = JSONArray.parseArray(typeTemplate.getSpecIds(), Map.class);
+        for (Map map : specList) {
+            //查询规格对应的选项
+            TbSpecificationOption param = new TbSpecificationOption();
+            param.setSpecId(Long.parseLong(map.get("id").toString()));
+            List<TbSpecificationOption> options = specificationOptionMapper.select(param);
+            map.put("options",options);
+        }
+        return specList;
     }
 }
